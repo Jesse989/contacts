@@ -1,0 +1,10 @@
+/* The sticky class is added to the navbar with JS when it reaches its scroll position */
+.sticky {
+  position: fixed !important;
+  top: 0;
+  margin: 0 !important;
+}
+
+.paddedTop {
+  padding-top: 24px;
+}
