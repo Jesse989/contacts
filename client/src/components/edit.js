@@ -20,10 +20,11 @@ mutation EditContact($id: ID!, $email: String, $phone: String, $first: String, $
 }
 `
 
-const Edit = ({ id, first, last, email, phone, toggleEdit}) => (
+const Edit = ({ id, first, last, email, phone, toggleEdit, disabled }) => (
   <Mutation mutation={EDIT_CONTACT}>
     {(editContact, { data }) => (
       <Button
+        disabled={disabled}
         basic
         color="green"
         onClick={(e) => {

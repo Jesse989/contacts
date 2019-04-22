@@ -12,15 +12,35 @@ class EditForm extends React.Component {
 
 state = {
   first: this.props.isNew ? '' : this.props.first,
+  firstErr: '',
   last: this.props.isNew ? '' : this.props.last,
+  lastErr: '',
   email: this.props.isNew ? '' : this.props.email,
-  phone: this.props.isNew ? '' : this.props.phone
+  emailErr: '',
+  phone: this.props.isNew ? '' : this.props.phone,
+  phoneErr: ''
 }
 
 
 handleChange = (e) => {
   const name = e.target.name;
-  const value = e.target.value;
+  let value = e.target.value;
+
+  if (name === 'phone') {
+    const re = new RegExp(/^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$/);
+    // validate phone:
+    if (!re.test(value)) {
+      this.setState(s => ({ phoneErr: 'please enter a valid phone number'}) );
+    } else {
+      this.setState(s => ({ phoneErr: ''}) );
+    }
+  } else if (name === 'email') {
+    if (!isEmail.validate(value)){
+      this.setState(s => ({ emailErr: 'please enter a valid email'}) );
+    } else {
+      this.setState(s => ({ emailErr: ''}) );
+    }
+  }
   this.setState(s => ({ [name]: value}))
 }
 
@@ -30,7 +50,7 @@ render() {
       <Card.Content textAlign='center'>
         <Form>
           <Input
-            icon={ this.state.first ? 'green circle check outline' : 'red x'}
+            icon={ !this.state.firstErr.length ? 'green circle check outline' : 'red x'}
             required
             name='first'
             type='text'
@@ -38,16 +58,18 @@ render() {
             placeholder={ this.props.first ? this.props.first : 'First: ' }
             onChange={ this.handleChange }
           />
+          <p className='error'>{this.state.firstErr}</p>
           <Input
-            icon={ this.state.first ? 'green circle check outline' : 'red x'}
+            icon={ !this.state.lastErr.length ? 'green circle check outline' : 'red x'}
             name='last'
             type='text'
             fluid
             placeholder={ this.props.last ? this.props.last : 'Last: '}
             onChange={ this.handleChange }
           />
+          <p className='error'>{this.state.lastErr}</p>
           <Input
-            icon={ this.state.first ? 'green circle check outline' : 'red x'}
+            icon={ !this.state.emailErr.length ? 'green circle check outline' : 'red x'}
             required
             name='email'
             type='email'
@@ -55,14 +77,17 @@ render() {
             placeholder={ this.props.email ? this.props.email : 'Email: '}
             onChange={ this.handleChange }
           />
+          <p className="error">{this.state.emailErr}</p>
           <Input
-            icon={ this.state.first ? 'green circle check outline' : 'red x'}
+            icon={ !this.state.phoneErr.length ? 'green circle check outline' : 'red x'}
             name='phone'
             type='tel'
             fluid
             placeholder={ this.props.phone ? this.props.phone : 'Phone: '}
             onChange={ this.handleChange }
           />
+          <p className='error'>{this.state.phoneErr}</p>
+
         </Form>
       </Card.Content>
       <Card.Content extra>
@@ -70,6 +95,7 @@ render() {
           {this.props.isNew ?
             <Fragment>
               <Add
+                disabled={(this.state.firstErr.length || this.state.lastErr.length || this.state.emailErr.length || this.state.phoneErr.length)}
                 email={this.state.email}
                 phone={this.state.phone}
                 first={this.state.first}
@@ -88,6 +114,7 @@ render() {
             :
             <Fragment>
               <Edit
+                disabled={(this.state.firstErr.length || this.state.lastErr.length || this.state.emailErr.length || this.state.phoneErr.length)}
                 id={this.props.id}
                 first={this.state.first ? this.state.first : this.props.first}
                 last={this.state.last ? this.state.last : this.props.last}

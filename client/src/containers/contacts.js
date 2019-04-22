@@ -47,8 +47,8 @@ class Contacts extends React.Component {
             if (error) return <p>Error :(</p>;
 
             return data.contacts
-              .filter(contact => contact.first.includes(this.state.searchString)
-                || contact.last.includes(this.state.searchString)
+              .filter(contact => contact.first.toUpperCase().includes(this.state.searchString.toUpperCase())
+                || contact.last.toUpperCase().includes(this.state.searchString.toUpperCase())
               )
               .sort((a, b) => (a.first + a.last).toUpperCase() > (b.first + b.last).toUpperCase())
               .map(({ id, first, last, email, phone }) => (

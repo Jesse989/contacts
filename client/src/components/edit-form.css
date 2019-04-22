@@ -1,3 +1,7 @@
 .input {
   padding: 4px;
 }
+
+.error {
+  color: red;
+}

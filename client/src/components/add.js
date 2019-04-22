@@ -23,7 +23,7 @@ mutation AddContact($email: String, $phone: String, $first: String, $last: Strin
 }`;
 
 
-const Add = ({ email, phone, first, last, toggle }) => (
+const Add = ({ email, phone, first, last, toggle, disabled }) => (
   <Mutation
     mutation={ADD_CONTACT}
     update={(cache, { data: { addContact } }) => {
@@ -59,7 +59,7 @@ const Add = ({ email, phone, first, last, toggle }) => (
 
       return (
         <Button
-          disabled={( !email || !phone || !first || !last)}
+          disabled={disabled || !first || !last || !email || !phone}
           basic
           color="green"
           onClick={handleSubmit}
